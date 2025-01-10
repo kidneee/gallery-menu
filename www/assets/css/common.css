@@ -101,6 +101,17 @@ img {
   }
 }
 
+/* フォントサイズ */
+.fs-24 {
+  font-size: var(--font-24);
+  font-weight: 300;
+}
+
+.fs-18 {
+  font-size: var(--font-18);
+  font-weight: 300;
+}
+
 /* セクションタイトル */
 .section__title {
   display: inline-block;
