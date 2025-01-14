@@ -11,39 +11,30 @@ document.addEventListener('DOMContentLoaded', () => {
     header.classList.toggle('open');
   });
 
-  //Slick
-  $('.slider').slick({
-    centerMode: true,
-    centerPadding: '170px', // 見切れる幅を%で指定
-    slidesToShow: 3, // 一度に表示するスライド数
-    slidesToScroll: 1, // 一度にスクロールするスライド数
-    responsive: [
-      {
-        breakpoint: 769,
-        settings: {
-          slidesToShow: 1, // ブレークポイント以下で表示スライド数を変更
-          centerPadding: '6.5%',
-        },
-      },
-      {
-        breakpoint: 657,
-        settings: {
-          slidesToShow: 1,
-          centerPadding: '7.5%',
-        },
-      },
-      {
-        breakpoint: 420,
-        settings: {
-          slidesToShow: 1,
-          centerPadding: '50px',
-        },
-      },
-    ],
+  //メインビジュアル
+  const moveImages = document.querySelectorAll('.move-image'); // 左右に動く画像
+  const scaleImage = document.querySelector('.scale-image'); // 拡大する画像
+
+  // スクロールイベントを追加
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+
+    // .move-image の動作
+    moveImages.forEach((image, index) => {
+      const direction = index % 2 === 0 ? 1 : -1; // 偶数は右、奇数は左
+      const offset = direction * (scrollY / -10); // スクロール量に基づくオフセット
+      image.style.transform = `translateX(${offset}px)`;
+    });
+
+    // .scale-image の動作
+    if (scaleImage) {
+      const scaleValue = 1 + scrollY / 1000; // スクロール量に基づいて拡大率を計算
+      scaleImage.style.transform = `scale(${scaleValue})`;
+    }
   });
 
-  //画像フェード表示
-  const featureImages = document.querySelectorAll('.feature__img');
+  //セクションフェード表示
+  const featureImages = document.querySelectorAll('.information__inner');
   if (featureImages.length > 0) {
     const observer = new IntersectionObserver((entries, observer) => {
       entries.forEach((entry) => {
