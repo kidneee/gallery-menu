@@ -58,7 +58,7 @@
     <div class="main-catchcopy__wrapper">
       <p class="main-catchcopy">
         Hello Flower!<br>
-        FA EXHIBITION<br class="sp">2021
+        FA EXHIBITION <br class="sp">2021
         </p>
     </div>
 
@@ -69,16 +69,14 @@
         <div class="information__body">
           <!-- 英語版 -->
           <div lang="en" class="information__desc">
-            <p><time datetime="2021-07-01">2021 JUL 1(THU)</time> - <time datetime="2021-07-03">3(SAT)</time></p>
-            <p>DAY 1: <time datetime="10:00">10am</time> - <time datetime="18:00">6pm</time></p>
-            <p>OTHER: <time datetime="10:00">10am</time> - <time datetime="17:30">5:30pm</time></p>
-            <p>at <span class="venue">PARK SIDE HALL</span></p>
+            <p class="information__date--en"><time datetime="2021-07-01">2021 JUL 1(THU)</time>-<time datetime="2021-07-03">3(SAT)</time></p>
+            <p class="information__time--en">DAY1 <time datetime="10:00">10am</time>-<time datetime="18:00">6pm </time>OTHER <time datetime="10:00">10am</time>-<time datetime="17:30">5:30pm</time></p>
+            <span class="information__venue">at PARK SIDE HALL</span>
           </div>
           <!-- 日本語版 -->
           <div lang="ja">
-            <p><time datetime="2021-07-01">2021年7月1日(木)</time> - <time datetime="2021-07-03">3日(土)</time></p>
-            <p>Day1: <time datetime="10:00">10時</time>〜<time datetime="18:00">18時</time></p>
-            <p>その他: <time datetime="10:00">10時</time>〜<time datetime="17:30">17時30分</time></p>
+            <p class="information__date--ja"><time datetime="2021-07-01">2021年7月1日(木)</time>―<time datetime="2021-07-03">3日(土)</time></p>
+            <p class="information__time--ja">DAY1 <time datetime="10:00">10時</time>〜<time datetime="18:00">18時　</time>その他 <time datetime="10:00">10時</time>〜<time datetime="17:30">17時30分</time></p>
           </div>
         </div><!-- /.information__body -->
       </div><!-- /.common-inner -->
@@ -117,23 +115,22 @@
         <div class="access__inner">
           <h2 lang="en" class="section__title access__heading">Access</h2>
           <div class="access__body">
-            <span>PARK SIDE HALL</span>
-            <!-- 日本語表記 -->
-            <div lang="ja">
-              <p>
-                〒152-0035 東京都目黒区自由が丘1-1-1<br>
-                  PARK SIDE HALL
-                </p>
-            </div>
-            <!-- 英語表記 -->
-            <div lang="en">
-              <p>PARK SIDE HALL, 1-1-1 Jiyugaoka, Meguro-ku, Tokyo</p>
-            </div>
+            <span class="access__venue">PARK SIDE HALL</span>
+            <div class="access__address">
+              <!-- 日本語表記 -->
+              <p lang="ja" class="access__address--ja">〒152-0035 東京都目黒区自由が丘1-1-1 PARK SIDE HALL</p>
+              <!-- 英語表記 -->
+              <div>
+                <p lang="en" class="access__address--en">PARK SIDE HALL, 1-1-1 Jiyugaoka, Meguro-ku, Tokyo</p>
+              </div>
+            </div><!-- /.access__address -->
             <!-- 連絡先 -->
-            <p>Tel: <a href="tel:+81311111111">03-1111-1111</a></p>
-            <p>Email: <a href="mailto:info@xxxxxxx.jp">info@xxxxxxx.jp</a></p>
+            <div class="access__contact">
+              <p class="access__tel">Tel: 03-1111-1111</p>
+              <p class="access__email">E-mail: info@xxxxxxx.jp</p>
+            </div><!-- /.access__contact -->
             <!-- Google Map リンク -->
-            <a href="https://www.google.com/maps/search/?api=1&query=PARK+SIDE+HALL,+1-1-1+Jiyugaoka,+Meguro-ku,+Tokyo" target="_blank" class="access__link" lang="en">
+            <a href="https://www.google.com/maps/search/?api=1&query=PARK+SIDE+HALL,+1-1-1+Jiyugaoka,+Meguro-ku,+Tokyo" target="_blank" class="access__link access__map" lang="en">
               Google Map
             </a>
           </div><!-- /.access__body -->
