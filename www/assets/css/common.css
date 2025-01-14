@@ -20,12 +20,10 @@
   --font-48: 3rem;
 
   /* メインキャッチコピー */
-  --catchcopy-font-pc: 6.25rem; /* 100px */
-  --catchcopy-font-sp: 3rem; /* 48px */
+  --catchcopy-font: clamp(3rem, 6.94vw, 6.25rem); /*  48px 〜100px */
 
   /* セクションタイトル */
-  --title-font-pc: 3.75rem; /* 60px */
-  --title-font-sp: 2rem; /* 32px */
+  --title-font: clamp(2rem, 4.17vw, 3.75rem); /*32px 〜 60px */
 
   /* ナビメニュー */
   --nav-font: 1rem; /* 16px */
@@ -87,6 +85,9 @@ img {
 .hidden {
   display: none;
 }
+.pc {
+  display: block;
+}
 
 .sp {
   display: none;
@@ -105,7 +106,7 @@ img {
 /* セクションタイトル */
 .section__title {
   display: inline-block;
-  font-size: var(--title-font-pc);
+  font-size: var(--title-font);
   letter-spacing: 0.03em;
   font-weight: 300;
   line-height: 1.15;
@@ -381,7 +382,9 @@ img {
 
 @media screen and (max-width: 900px) {
   .main-visual {
+    justify-content: center;
     height: 100vh;
+    overflow: hidden;
   }
 }
 
@@ -393,6 +396,11 @@ img {
   will-change: transform; /* パフォーマンス向上 */
 }
 
+@media screen and (max-width: 900px) {
+  .main-visual__image {
+    height: 100vh;
+  }
+}
 .main-content__wrapper {
   position: relative;
   z-index: 10;
@@ -410,7 +418,7 @@ img {
 }
 
 .main-catchcopy {
-  font-size: var(--catchcopy-font-pc);
+  font-size: var(--catchcopy-font);
   letter-spacing: 0.03em;
   font-weight: 300;
   line-height: 1.26;
@@ -645,33 +653,35 @@ img {
 }
 
 /* ============================
-* サイドボタン
+* サイドボタン(PCのみ)
 * ========================= */
-.side-btn {
-  position: fixed;
-  display: flex;
-  font-size: var(--side-btn-font);
-  letter-spacing: 0.01em;
-  bottom: 201px;
-  right: -143px;
-  z-index: 1000;
-  transform: rotate(-90deg);
-  border: 1px solid var(--white);
-}
+@media screen and (min-width: 900px) {
+  .side-btn {
+    position: fixed;
+    display: flex;
+    font-size: var(--side-btn-font);
+    letter-spacing: 0.01em;
+    bottom: 201px;
+    right: -143px;
+    z-index: 1000;
+    transform: rotate(-90deg);
+    border: 1px solid var(--white);
+  }
 
-.side-btn__link {
-  width: 165px;
-  height: 48px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  line-height: 1.286;
-  color: var(--white);
-  padding-top: 15px;
-  padding-bottom: 15px;
-  margin-left: auto;
-}
+  .side-btn__link {
+    width: 165px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.286;
+    color: var(--white);
+    padding-top: 15px;
+    padding-bottom: 15px;
+    margin-left: auto;
+  }
 
-.side-btn__link + .side-btn__link {
-  border-left: 1px solid var(--white);
+  .side-btn__link + .side-btn__link {
+    border-left: 1px solid var(--white);
+  }
 }
