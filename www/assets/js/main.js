@@ -58,32 +58,87 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // .gallery セクションで .side-btn の表示/非表示制御
+  // .gallery と .access__wrapper の表示/非表示を制御
   const gallerySection = document.querySelector('.gallery');
+  const accessWrapper = document.querySelector('.access__wrapper');
   const sideBtn = document.querySelector('.side-btn');
 
-  if (gallerySection && sideBtn) {
-    console.log('Elements found:', gallerySection, sideBtn); // 要素が見つかったか確認
+  let isInGallery = false; // .gallery内にいるかどうかのフラグ
+  let isInAccess = false; // .access__wrapper内にいるかどうかのフラグ
 
-    const galleryObserver = new IntersectionObserver(
+  // IntersectionObserverで gallery を監視
+  const galleryObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          console.log('Entered gallery');
+          isInGallery = true;
+          if (!isInAccess) {
+            sideBtn.classList.add('visible'); // gallery内で、accessにいなければ表示
+          }
+        } else {
+          console.log('Exited gallery');
+          isInGallery = false;
+          sideBtn.classList.remove('visible'); // galleryを抜けたら非表示
+        }
+      });
+    },
+    {threshold: 0}
+  );
+
+  // IntersectionObserverで access__wrapper を監視
+  const accessObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          console.log('Entered access__wrapper');
+          isInAccess = true;
+          sideBtn.classList.remove('visible'); // accessに入ったら常に非表示
+        } else {
+          console.log('Exited access__wrapper');
+          isInAccess = false;
+          if (isInGallery) {
+            sideBtn.classList.add('visible'); // gallery内に戻った場合再表示
+          }
+        }
+      });
+    },
+    {threshold: 0}
+  );
+
+  // gallery と access__wrapper を監視
+  if (gallerySection) {
+    galleryObserver.observe(gallerySection);
+  }
+  if (accessWrapper) {
+    accessObserver.observe(accessWrapper);
+  }
+
+  // Access表示時の背景画像の切り替え
+  const accessHeading = document.querySelector('.access__heading'); // .access__headingを取得
+  const targetElement = document.body; // 背景を切り替える対象（例：body）
+
+  if (accessHeading) {
+    const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            console.log('Gallery visible'); // ログ表示
-            sideBtn.classList.add('visible'); // クラスを追加
+            console.log('.access__heading is visible');
+            // 背景画像を切り替え
+            targetElement.style.backgroundImage = 'url("assets/img/bg.jpg")';
+            targetElement.classList.add('change-bg');
           } else {
-            console.log('Gallery not visible'); // ログ表示
-            sideBtn.classList.remove('visible'); // クラスを削除
+            console.log('."access__heading is not visible');
+            // 元の背景に戻す
+            targetElement.style.backgroundImage = 'none';
           }
         });
       },
-      {
-        threshold: 0, // 50%が表示されたら
-      }
+      {threshold: 0.5} // 50%が画面内に見えたら切り替え
     );
 
-    galleryObserver.observe(gallerySection);
+    observer.observe(accessHeading);
   } else {
-    console.error('Gallery section or side button not found.');
+    console.error('.access__heading not found');
   }
 });
