@@ -625,7 +625,7 @@ img {
   border-radius: 9999px;
   background-color: var(--white);
   top: 50%;
-  left: -40px;
+  right: -80px;
   transform: translateY(-50%);
 }
 
@@ -643,7 +643,8 @@ img {
 }
 
 @media screen and (max-width: 900px) {
-  .arrow {
+  .arrow,
+  .arrow::before {
     display: none;
   }
 }
