@@ -31,12 +31,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (scaleImage) {
       if (isSmallScreen) {
         // 画面幅900px以下では縮小
-        const scaleValue = 1 - scrollY / 1000; // 縮小率を計算
-        scaleImage.style.transform = `scale(${Math.max(scaleValue, 0.05)})`; // 縮小値の最小値を0.5に制限
+        const widthValue = 200 - scrollY / 5; // 縮小率を計算（200pxから縮小）
+        scaleImage.style.width = `${Math.max(widthValue, 50)}px`; // 最小幅を50pxに制限
       } else {
         // 通常の拡大
-        const scaleValue = 1 + scrollY / 1000; // スクロール量に基づいて拡大率を計算
-        scaleImage.style.transform = `scale(${scaleValue})`;
+        const widthValue = 100 + '%' + scrollY / 5 + '%'; // 横幅を拡大
+        scaleImage.style.width = `${widthValue}px`;
       }
     }
   });
