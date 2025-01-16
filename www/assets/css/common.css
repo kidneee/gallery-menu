@@ -716,10 +716,11 @@ img {
     font-size: var(--side-btn-font);
     letter-spacing: 0.01em;
     bottom: 201px;
-    right: -143px;
+    right: -200px;
     z-index: 1000;
     transform: rotate(-90deg);
     border: 1px solid var(--white);
+    transition: right 0.3s ease;
   }
 
   .side-btn__link {
@@ -737,5 +738,9 @@ img {
 
   .side-btn__link + .side-btn__link {
     border-left: 1px solid var(--white);
+  }
+
+  .side-btn.visible {
+    right: -150px;
   }
 }

@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     header.classList.toggle('open');
   });
 
-  //メインビジュアル
+  // メインビジュアル
   const moveImages = document.querySelectorAll('.move-image'); // 左右に動く画像
   const scaleImage = document.querySelector('.scale-image'); // 拡大する画像
 
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  //セクションフェード表示
+  // セクションフェード表示
   const featureImages = document.querySelectorAll('.information__inner');
   if (featureImages.length > 0) {
     const observer = new IntersectionObserver((entries, observer) => {
@@ -56,5 +56,34 @@ document.addEventListener('DOMContentLoaded', () => {
     featureImages.forEach((img) => {
       observer.observe(img);
     });
+  }
+
+  // .gallery セクションで .side-btn の表示/非表示制御
+  const gallerySection = document.querySelector('.gallery');
+  const sideBtn = document.querySelector('.side-btn');
+
+  if (gallerySection && sideBtn) {
+    console.log('Elements found:', gallerySection, sideBtn); // 要素が見つかったか確認
+
+    const galleryObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            console.log('Gallery visible'); // ログ表示
+            sideBtn.classList.add('visible'); // クラスを追加
+          } else {
+            console.log('Gallery not visible'); // ログ表示
+            sideBtn.classList.remove('visible'); // クラスを削除
+          }
+        });
+      },
+      {
+        threshold: 0, // 50%が表示されたら
+      }
+    );
+
+    galleryObserver.observe(gallerySection);
+  } else {
+    console.error('Gallery section or side button not found.');
   }
 });
