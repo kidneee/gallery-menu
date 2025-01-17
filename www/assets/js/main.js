@@ -116,29 +116,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Access表示時の背景画像の切り替え
   const accessHeading = document.querySelector('.access__heading'); // .access__headingを取得
-  const targetElement = document.body; // 背景を切り替える対象（例：body）
+  const targetElement = document.querySelector('.bg__wrapper'); // 背景を切り替える対象
+  const contactHeading = document.querySelector('.contact__heading'); // .contact__headingを取得
 
   if (accessHeading) {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            console.log('.access__heading is visible');
-            // 背景画像を切り替え
-            targetElement.style.backgroundImage = 'url("assets/img/bg.jpg")';
-            targetElement.classList.add('change-bg');
+            if (entry.target === accessHeading) {
+              console.log('.access__heading is visible');
+              targetElement.style.backgroundImage = 'url("assets/img/bg.jpg")';
+              targetElement.style.backgroundSize = 'cover';
+              targetElement.style.backgroundPosition = 'center';
+              targetElement.style.backgroundRepeat = 'no-repeat';
+              targetElement.style.backgroundAttachment = 'fixed';
+              targetElement.classList.add('change-bg');
+              targetElement.classList.remove('return-bg');
+              gallerySection.classList.add('fade-out');
+            } else if (entry.target === contactHeading) {
+              console.log('.contact__heading is visible');
+              targetElement.classList.remove('change-bg');
+              targetElement.classList.add('fade-out');
+              targetElement.style.backgroundImage = 'none';
+              targetElement.style.backgroundColor = 'var(--background)';
+            }
           } else {
-            console.log('."access__heading is not visible');
-            // 元の背景に戻す
-            targetElement.style.backgroundImage = 'none';
+            if (entry.target === accessHeading) {
+              console.log('.access__heading is not visible');
+              targetElement.classList.remove('change-bg');
+              targetElement.classList.add('return-bg');
+              gallerySection.classList.remove('fade-out');
+            } else if (entry.target === contactHeading) {
+              console.log('.contact__heading is not visible');
+              targetElement.classList.remove('fade-in');
+            }
           }
         });
       },
-      {threshold: 0.5} // 50%が画面内に見えたら切り替え
+      {threshold: 0.5}
     );
 
     observer.observe(accessHeading);
+    observer.observe(contactHeading);
   } else {
-    console.error('.access__heading not found');
+    console.error('.access__heading or .contact__heading not found');
   }
 });
