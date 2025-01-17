@@ -42,21 +42,25 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // セクションフェード表示
-  const featureImages = document.querySelectorAll('.information__inner');
-  if (featureImages.length > 0) {
-    const observer = new IntersectionObserver((entries, observer) => {
-      entries.forEach((entry) => {
+  const sections = document.querySelectorAll('.section');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry, index) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          observer.unobserve(entry.target);
+          setTimeout(() => {
+            entry.target.classList.add('in-view');
+          }, index * 200);
+          observer.unobserve(entry.target); // 一度だけ適用
         }
       });
-    });
+    },
+    {threshold: 0.1}
+  );
 
-    featureImages.forEach((img) => {
-      observer.observe(img);
-    });
-  }
+  sections.forEach((section) => {
+    observer.observe(section);
+  });
 
   // .gallery と .access__wrapper の表示/非表示を制御
   const gallerySection = document.querySelector('.gallery');
