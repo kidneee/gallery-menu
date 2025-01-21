@@ -11,159 +11,128 @@ document.addEventListener('DOMContentLoaded', () => {
     header.classList.toggle('open');
   });
 
-  // メインビジュアル
-  const moveImages = document.querySelectorAll('.move-image'); // 左右に動く画像
-  const scaleImage = document.querySelector('.scale-image'); // 拡大する画像
+  /*=================================================
+    スクロール時のイベント
+    ===================================================*/
+  $(window).scroll(function () {
+    // スクロール位置を取得
+    let scroll = $(window).scrollTop();
 
-  // スクロールイベントを追加
-  window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-    const isSmallScreen = window.innerWidth <= 900; // ブレークポイントのチェック
+    /*=================================================
+      メインビジュアルの拡大・縮小
+      ===================================================*/
+    mv_scale(scroll);
 
-    // .move-image の動作
-    moveImages.forEach((image, index) => {
-      const direction = index % 2 === 0 ? 1 : -1; // 偶数は右、奇数は左
-      const offset = direction * (scrollY / -10); // スクロール量に基づくオフセット
-      image.style.transform = `translateX(${offset}px)`;
-    });
-
-    // .scale-image の動作
-    if (scaleImage) {
-      if (isSmallScreen) {
-        // 画面幅900px以下では縮小
-        const widthValue = 200 - scrollY / 5; // 縮小率を計算（200pxから縮小）
-        scaleImage.style.width = `${Math.max(widthValue, 50)}px`; // 最小幅を50pxに制限
-      } else {
-        // 通常の拡大
-        const widthValue = 100 + '%' + scrollY / 5 + '%'; // 横幅を拡大
-        scaleImage.style.width = `${widthValue}px`;
-      }
+    /*=================================================
+      ロゴ、ハンバーガーメニューの表示
+      ===================================================*/
+    // スクロール位置が520pxを超えた場合
+    if (scroll > 520) {
+      // ロゴとハンバーガ―メニュをfadeInで表示する
+      $('.header__logo').fadeIn(500);
+      $('.hamburger').fadeIn(500);
+      // スクロール位置が520px未満の場合
+    } else {
+      // ロゴとハンバーガ―メニュをfadeOutで非表示にする
+      $('.header__logo').fadeOut(500);
+      $('.hamburger').fadeOut(500);
     }
   });
 
-  // セクションフェード表示
-  const sections = document.querySelectorAll('.section');
+  /*=================================================
+  メインビジュアルの拡大・縮小（共通処理）
+  ===================================================*/
+  function mv_scale(scroll) {
+    // window.innerWidthで画面幅を取得
+    // PC表示の場合の処理（画面幅が900pxより大きい場合　※900pxはCSSのブレークポイントとあわせる）
+    if (window.innerWidth > 900) {
+      // メインビジュアルのCSS（width）を変更する
+      // widthの値をスクロール量にあわせて増やすことで画像を拡大させる
+      $('.main-visual__image').css({
+        width: 100 / 3 + scroll / 10 + '%',
+      });
+      // スマホ表示の場合の処理（画面幅が900px以下の場合）
+    } else {
+      // メインビジュアルのCSS（width）を変更する
+      // widthの値をスクロール量にあわせて減らすことで画像を縮小させる
+      $('.main-visual__image').css({
+        width: 100 - scroll / 10 + '%',
+      });
+    }
+  }
 
+  // セクションフェード表示
+  const fadeInElements = document.querySelectorAll('.fade-in');
+
+  // IntersectionObserverを作成
   const observer = new IntersectionObserver(
     (entries) => {
-      entries.forEach((entry, index) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setTimeout(() => {
-            entry.target.classList.add('in-view');
-          }, index * 200);
-          observer.unobserve(entry.target); // 一度だけ適用
+          // 要素がビューポートに入ったら show クラスを追加
+          entry.target.classList.add('show');
         }
       });
     },
-    {threshold: 0.1}
+    {
+      threshold: 0.1, // 要素の10%が表示されたらトリガー
+    }
   );
 
-  sections.forEach((section) => {
-    observer.observe(section);
+  // すべての .fade-in 要素を監視
+  fadeInElements.forEach((element) => {
+    observer.observe(element);
   });
 
-  // .gallery と .access__wrapper の表示/非表示を制御
-  const gallerySection = document.querySelector('.gallery');
-  const accessWrapper = document.querySelector('.access__wrapper');
-  const sideBtn = document.querySelector('.side-btn');
+  /*=================================================
+      サイドボタンを表示
+      ===================================================*/
+  // 画面下から#galleryまでの距離を取得
+  let gallery_position = $('#gallery').offset().top - $(window).height();
+  // 画面下から#accessまでの距離を取得
+  let access_position = $('#access').offset().top - $(window).height();
 
-  let isInGallery = false; // .gallery内にいるかどうかのフラグ
-  let isInAccess = false; // .access__wrapper内にいるかどうかのフラグ
-
-  // IntersectionObserverで gallery を監視
-  const galleryObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          console.log('Entered gallery');
-          isInGallery = true;
-          if (!isInAccess) {
-            sideBtn.classList.add('visible'); // gallery内で、accessにいなければ表示
-          }
-        } else {
-          console.log('Exited gallery');
-          isInGallery = false;
-          sideBtn.classList.remove('visible'); // galleryを抜けたら非表示
-        }
-      });
-    },
-    {threshold: 0}
-  );
-
-  // IntersectionObserverで access__wrapper を監視
-  const accessObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          console.log('Entered access__wrapper');
-          isInAccess = true;
-          sideBtn.classList.remove('visible'); // accessに入ったら常に非表示
-        } else {
-          console.log('Exited access__wrapper');
-          isInAccess = false;
-          if (isInGallery) {
-            sideBtn.classList.add('visible'); // gallery内に戻った場合再表示
-          }
-        }
-      });
-    },
-    {threshold: 0}
-  );
-
-  // gallery と access__wrapper を監視
-  if (gallerySection) {
-    galleryObserver.observe(gallerySection);
-  }
-  if (accessWrapper) {
-    accessObserver.observe(accessWrapper);
-  }
-
-  // Access表示時の背景画像の切り替え
-  const accessHeading = document.querySelector('.access__heading'); // .access__headingを取得
-  const targetElement = document.querySelector('.bg__wrapper'); // 背景を切り替える対象
-  const contactHeading = document.querySelector('.contact__heading'); // .contact__headingを取得
-
-  if (accessHeading) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (entry.target === accessHeading) {
-              console.log('.access__heading is visible');
-              targetElement.style.backgroundImage = 'url("assets/img/bg.jpg")';
-              targetElement.style.backgroundSize = 'cover';
-              targetElement.style.backgroundPosition = 'center';
-              targetElement.style.backgroundRepeat = 'no-repeat';
-              targetElement.style.backgroundAttachment = 'fixed';
-              targetElement.classList.add('change-bg');
-              targetElement.classList.remove('return-bg');
-              gallerySection.classList.add('fade-out');
-            } else if (entry.target === contactHeading) {
-              console.log('.contact__heading is visible');
-              targetElement.classList.remove('change-bg');
-              targetElement.classList.add('fade-out');
-              targetElement.style.backgroundImage = 'none';
-              targetElement.style.backgroundColor = 'var(--background)';
-            }
-          } else {
-            if (entry.target === accessHeading) {
-              console.log('.access__heading is not visible');
-              targetElement.classList.remove('change-bg');
-              targetElement.classList.add('return-bg');
-              gallerySection.classList.remove('fade-out');
-            } else if (entry.target === contactHeading) {
-              console.log('.contact__heading is not visible');
-              targetElement.classList.remove('fade-in');
-            }
-          }
+  // window.innerWidthで画面幅を取得
+  // PC表示の場合の処理（画面幅が900pxより大きい場合　※900pxはCSSのブレークポイントとあわせる）
+  if (window.innerWidth > 900) {
+    // #galleryが表示された場合（スクロール位置が、画面下から#galleryまでの距離を超えた場合）
+    if (scroll > gallery_position) {
+      // #accessが表示されるまでの間は、#side-btnを横からスライドさせて表示する
+      if (scroll < access_position) {
+        $('.side-btn').css({
+          transform: 'rotate(-90deg) translateY(0)',
         });
-      },
-      {threshold: 0.5}
-    );
+        // #accessが表示されたら、#side-btnをスライドさせて非表示にする
+      } else {
+        $('.side-btn').css({
+          transform: 'rotate(-90deg) translateY(60px)',
+        });
+      }
+      // #galleryが表示される前は、#side-btnをスライドさせて非表示にする
+    } else {
+      $('.side-btn').css({
+        transform: 'rotate(-90deg) translateY(60px)',
+      });
+    }
+  }
 
-    observer.observe(accessHeading);
-    observer.observe(contactHeading);
+  /*=================================================
+      Accessの背景画像を表示
+      ===================================================*/
+  // 画面下から#contactまでの距離を取得
+  let contact_position = $('#contact').offset().top - $(window).height();
+
+  // #accessが表示された場合
+  if (scroll > access_position) {
+    // #contactが表示されるまでの間は、背景画像をfadeInで表示する
+    if (scroll < contact_position) {
+      $('.access__bg').fadeIn(500);
+    } else {
+      $('.access__bg').fadeOut(500);
+    }
+    // #accessが表示される前の場合
   } else {
-    console.error('.access__heading or .contact__heading not found');
+    // 背景画像を表示しない
+    $('.access__bg').fadeOut(500);
   }
 });
