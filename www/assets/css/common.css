@@ -18,12 +18,14 @@
   --font-36: 2.25rem;
   --font-40: 2.5rem;
   --font-48: 3rem;
+  --font-60: 3.75rem;
+  --font-100: 6.25rem;
 
   /* メインキャッチコピー */
-  --catchcopy-font: clamp(3rem, 6.94vw, 6.25rem); /*  48px 〜100px */
+  --catchcopy-font: clamp(var(--font-48), 6.94vw, var(--font-100)); /*  48px 〜100px */
 
   /* セクションタイトル */
-  --title-font: clamp(2rem, 4.17vw, 3.75rem); /*32px 〜 60px */
+  --title-font: clamp(var(--font-32), 4.17vw, var(--font-60)); /*32px 〜 60px */
 
   /* ナビメニュー */
   --nav-font: 1rem; /* 16px */
@@ -115,9 +117,8 @@ img {
 
 @media screen and (max-width: 900px) {
   .section__title {
-    font-size: var(--font-24);
+    font-size: var(--font-32);
     line-height: 1.125;
-    margin-bottom: 20px;
   }
 }
 
@@ -698,6 +699,9 @@ img {
 /* ============================
 * サイドボタン(PCのみ)
 * ========================= */
+.side-btn {
+  display: none;
+}
 @media screen and (min-width: 900px) {
   .side-btn {
     border: solid 1px #fff;
