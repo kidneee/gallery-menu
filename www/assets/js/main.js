@@ -7,10 +7,33 @@ document.addEventListener('DOMContentLoaded', function () {
   const header = document.querySelector('.header');
 
   hamburgerButton.addEventListener('click', () => {
+    // 現在の状態を取得
     const isExpanded = hamburgerButton.getAttribute('aria-expanded') === 'true';
-    hamburgerButton.setAttribute('aria-expanded', !isExpanded);
+    // 状態を反転
+    const newState = !isExpanded;
+    // ボタンの状態を更新
+    hamburgerButton.setAttribute('aria-expanded', newState);
+    // クラスの切り替え
+    hamburgerButton.classList.toggle('open');
     drawerMenu.classList.toggle('open');
     header.classList.toggle('open');
+  });
+
+  // スクロール防止の制御
+  function toggleScrollLock() {
+    document.body.style.overflow = drawerMenu.classList.contains('open') ? 'hidden' : '';
+  }
+
+  // メニュー内のリンクをクリックした時の処理
+  const menuLinks = drawerMenu.querySelectorAll('a');
+  menuLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      hamburgerButton.setAttribute('aria-expanded', 'false');
+      drawerMenu.classList.remove('open');
+      header.classList.remove('open');
+      hamburgerButton.classList.remove('open');
+      toggleScrollLock();
+    });
   });
 
   /*=================================================
@@ -33,7 +56,6 @@ document.addEventListener('DOMContentLoaded', function () {
   /*=================================================
   フェード表示
   ===================================================*/
-
   let elements = document.querySelectorAll('.fade-in');
 
   let observer = new IntersectionObserver((entries) => {
